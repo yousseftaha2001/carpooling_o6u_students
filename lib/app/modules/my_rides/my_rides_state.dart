@@ -10,4 +10,5 @@ class MyRidesState {
   RxBool gettingState = false.obs;
   RxString error = ''.obs;
   TripsModel? tripsModel;
+  RxBool allTrips=true.obs;
 }

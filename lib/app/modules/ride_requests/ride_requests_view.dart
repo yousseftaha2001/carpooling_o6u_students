@@ -20,11 +20,30 @@ class _RideRequestsPageState extends State<RideRequestsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          "All Requests",
+          style: Get.textTheme.bodyLarge,
+        ),
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
+      ),
+      
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Obx(
-                () {
+            () {
               if (controller.state.gettingState.value) {
                 return Center(
                   child: SpinKitFadingCircle(
@@ -34,25 +53,31 @@ class _RideRequestsPageState extends State<RideRequestsPage> {
               } else {
                 if (controller.state.error.value.isNotEmpty) {
                   return Center(
-                    child: Text("Some thing want wrong please try again"),
+                    child: Text(
+                      "${controller.state.error.value}",
+                      style: Get.textTheme.bodyLarge!.copyWith(
+                        color: Colors.black,
+                      ),
+                    ),
                   );
                 } else {
-                  if (controller.state.requests == null) {
+                  if (controller.state.requests!.requets!.isEmpty) {
                     return Center(
-                      child: Text("Some thing want wrong please try again"),
+                      child: Text(
+                        "No requests yet.",
+                        style: Get.textTheme.bodyLarge!.copyWith(
+                          color: Colors.black,
+                        ),
+                      ),
                     );
                   } else {
                     return ListView.separated(
                       itemCount: controller.state.requests!.requets!.length,
                       itemBuilder: (context, index) {
-                        return RequestCard(
-                          index: index,
-                        );
+                        return RequestCard(index: index);
                       },
                       separatorBuilder: (BuildContext context, int index) {
-                        return Divider(
-                          color: Colors.black,
-                        );
+                        return const Divider(color: Colors.black);
                       },
                     );
                   }

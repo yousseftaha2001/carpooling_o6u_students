@@ -1,6 +1,8 @@
 import 'package:carpooling_o6u_students/app/modules/my_rides/my_rides_controller.dart';
 import 'package:carpooling_o6u_students/app/modules/ride_requests/ride_requests_binding.dart';
 import 'package:carpooling_o6u_students/app/modules/ride_requests/ride_requests_view.dart';
+import 'package:carpooling_o6u_students/app/modules/trip_room/trip_room_binding.dart';
+import 'package:carpooling_o6u_students/app/modules/trip_room/trip_room_view.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -169,33 +171,67 @@ class MyRideCard extends StatelessWidget {
                 height: 1.h,
                 color: Colors.grey,
               ),
-              Padding(
-                padding: EdgeInsets.all(10.sp),
-                child: TextButton(
-                  onPressed: () {
-                    Get.to(
-                      () => RideRequestsPage(),
-                      binding: RideRequestsBinding(
-                        tripId: controller.state.tripsModel!.trips![index].id!
-                            .toString(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10.sp),
+                    child: TextButton( 
+                      onPressed: () {
+                        Get.to(
+                          () => RideRequestsPage(),
+                          binding: RideRequestsBinding(
+                            tripId: controller
+                                .state.tripsModel!.trips![index].id!
+                                .toString(),
+                          ),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'View all Requests',
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Get.theme.primaryColor,
+                            ),
+                          ),
+                        ],
                       ),
-                    );
-
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'View all Requests',
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Get.theme.primaryColor,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: EdgeInsets.all(10.sp),
+                    child: TextButton(
+                      onPressed: () {
+
+                        Get.to(
+                          () => TripRoomPage(),
+                          binding: TripRoomBinding(
+                            tripId: controller
+                                .state.tripsModel!.trips![index].id
+                                .toString(),
+                          ),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Open',
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Get.theme.primaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

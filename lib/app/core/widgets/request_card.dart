@@ -76,14 +76,14 @@ class RequestCard extends StatelessWidget {
                 height: 1.h,
                 color: Colors.grey,
               ),
-             Row(
+            controller.state.requests!.requets![index].requestState=='wait'? Row(
                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                children: [
                  Padding(
                    padding: EdgeInsets.all(10.sp),
                    child: TextButton(
                      onPressed: () {
-                       controller.acceptRequest(index: index);
+                       controller.acceptRequest(index: index,type: 'accepted');
 
                      },
                      child: Text(
@@ -101,7 +101,7 @@ class RequestCard extends StatelessWidget {
                    padding: EdgeInsets.all(10.sp),
                    child: TextButton(
                      onPressed: () {
-
+                       controller.acceptRequest(index: index,type: 'rejected');
 
                      },
                      child: Text(
@@ -115,7 +115,7 @@ class RequestCard extends StatelessWidget {
                    ),
                  ),
                ],
-             )
+             ):Container()
             ],
           ),
         ),

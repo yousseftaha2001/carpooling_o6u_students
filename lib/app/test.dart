@@ -1,144 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
-class TripDetailsScreen extends StatelessWidget {
-  const TripDetailsScreen({Key? key}) : super(key: key);
+
+class RideDetailsScreen extends StatelessWidget {
+  const RideDetailsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            icon:const Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-            onPressed: (){},
-          ),
-          title: Text(
-            'Arriving 8 mins',
-            style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(38, 58, 109, 1),
-            ),
-          ),
-        ),
-        body: Padding(
-          padding:const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              HomeWorkPlaceWidget(),
-              Padding(
-                padding:const  EdgeInsets.all(50),
-                child: Container(
-                  color: Colors.grey,
-                  height: 1,
-                ),
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            leading: IconButton(
+              icon:const Icon(
+                Icons.arrow_back,
+                color: Colors.black,
               ),
-              CarDetailsWidget(),
-              SizedBox(height: 5,),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 90),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
-                  height: 1,
-                  color: Colors.grey,
-                ),
-              ),
-              SizedBox(height: 30.h,),
-             
-
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
-
-
-class CarDetailsWidget extends StatelessWidget {
-  const CarDetailsWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Image.asset('assets/images/car2.jpg'),
-        SizedBox(width: 10.w,),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'HatchBack',
+              onPressed: (){
+                // Get.to(TripDetailsScreen());
+              },
+            ),
+            title: Text(
+              'Arriving in 8 mins',
               style: TextStyle(
-                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black
+                  color:const Color.fromRGBO(38, 58, 109, 1),
+                  fontSize: 24.sp
               ),
             ),
-            SizedBox(height: 5.h,),
-            Row(
-              children: [
-                const Icon(Icons.access_time_outlined,color: Colors.grey,),
-                SizedBox(width: 5.w,),
-                Text(
-                  '8 mins',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.grey,
+          ),
+          body: Padding(
+            padding:const EdgeInsets.all(20),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20.h,),
+                  Text(
+                    'Driver',
+                    style: TextStyle(
+                        fontSize: 21.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 5.h,),
-            Row(
-              children: [
-                const Icon(Icons.person,color: Colors.grey,),
-                SizedBox(width: 5.w,),
-                Text(
-                  '2 passengers',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.grey,
+                  SizedBox(height: 30.h,),
+                  // DriverContainer(),
+                  SizedBox(height: 30.sp,),
+                  Text(
+                    'Co-Passenger',
+                    style: TextStyle(
+                        fontSize: 21.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 5.h,),
-          ],
-        ),
-        Column(
-          children: [
-            Text(
-              '7 Km',
-              style: TextStyle(
-                  fontSize: 18.sp,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold
-              ),
-            ),
-            TextButton(
-                onPressed: (){},
-                child: Text(
-                  'Change Ride',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Color.fromRGBO(74, 115, 218, 1),
+                  SizedBox(height: 20.sp,),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder:(context,index)=> CoPassengerWidget(),
+                    separatorBuilder: (context,index)=>SizedBox(height: 15.sp,),
+                    itemCount: 4,
                   ),
-                )
-            )
-          ],
-        )
+                  SizedBox(height: 30.h,),
+                  Center(
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          minimumSize: const Size(200, 40),
 
-      ],
+                        ),
+
+                        onPressed: (){},
+                        child: Text(
+                          'view on map',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.sp
+                          ),
+                        )
+                    ),
+                  )
+
+                ],
+              ),
+            ),
+          ),
+        )
     );
   }
 }
@@ -146,72 +99,83 @@ class CarDetailsWidget extends StatelessWidget {
 
 
 
-class HomeWorkPlaceWidget extends StatelessWidget {
-  const HomeWorkPlaceWidget({Key? key}) : super(key: key);
+class CoPassengerWidget extends StatelessWidget {
+  const CoPassengerWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color:const Color.fromRGBO(238, 241, 255, 1)
+      decoration:const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        color: Color.fromRGBO(234, 237, 252, 1),
       ),
-      child:Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.h),
-            child: Row(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(width: 20.w,),
-                Image.asset('assets/images/location.png',),
-                SizedBox(width: 20.w,),
-                Text(
-                  'Home',
-                  style: TextStyle(
-                      fontSize: 18.sp,
-                      color: Colors.grey
-                  ),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50.w),
-            child: Container(
-                color: Colors.grey,
-                height: 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                // Image.asset('assets/images/Frame 10.png'),
+                SizedBox(width: 10.w,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Stack(
+                    Row(
                       children: [
-                        Image.asset('assets/images/Rectangle 979.png'),
-                        Image.asset('assets/images/arrows.png')
+                        Text(
+                          'passenger',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.sp
+                          ),
+                        ),
+                        SizedBox(width: 10.w,),
+                        Icon(Icons.person,color: Colors.grey,),
+                      ],
+                    ),
+                    SizedBox(height: 10.h,),
+                    Row(
+                      children: [
+                        // Image.asset('assets/images/pase.png'),
+                        SizedBox(width: 6.sp,),
+                        Text(
+                          'Tcs,delhi',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: Colors.grey
+                          ),
+                        ),
                       ],
                     )
                   ],
-                )
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.h),
-            child: Row(
-              children: [
-                SizedBox(width: 20.w,),
-                Image.asset('assets/images/circle.png',),
-                SizedBox(width: 20.w,),
-                Text(
-                  'Work Place',
-                  style: TextStyle(
-                      fontSize: 18.sp,
-                      color: Colors.grey
-                  ),
-                )
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Text(
+                      '4.8',
+                      style: TextStyle(
+                          fontSize: 16.sp,
+                          color: Colors.black
+                      ),
+                    ),
+                    SizedBox(width: 4.sp,),
+                    const Icon(
+                      Icons.star,
+                      color: Color.fromRGBO(234, 205, 105, 1),
+                    )
+
+                  ],
+                ),
               ],
-            ),
-          ),
-        ],
-      ) ,
-    );
+            )
+          ],
+        ),
+      ),
+    );;
   }
 }

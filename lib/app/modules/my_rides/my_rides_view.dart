@@ -43,7 +43,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Obx(
-                () {
+            () {
               if (controller.state.gettingState.value) {
                 return Center(
                   child: SpinKitFadingCircle(
@@ -53,24 +53,86 @@ class _MyRidesPageState extends State<MyRidesPage> {
               } else {
                 if (controller.state.error.value.isNotEmpty) {
                   return Center(
-                    child: Text("Some thing want wrong please try again"),
+                    child: Text("${controller.state.error.value}"),
                   );
                 } else {
                   if (controller.state.tripsModel == null) {
-                    return Center(
+                    return const Center(
                       child: Text("Some thing want wrong please try again"),
                     );
                   } else {
-                    return ListView.separated(
-                      itemCount: controller.state.tripsModel!.trips!.length,
-                      itemBuilder: (context, index) {
-                        return MyRideCard(index: index);
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return Divider(
-                          color: Colors.black,
-                        );
-                      },
+                    return Column(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Obx(
+                            () {
+                              return Row(
+                                children: [
+                                  Flexible(
+                                    child: CheckboxListTile(
+                                      value: controller.state.allTrips.value
+                                          ? true
+                                          : false,
+                                      onChanged: (value) {
+                                        controller.state.allTrips.value = true;
+                                      },
+                                      title: Text(
+                                        "All",
+                                        style: Get.textTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: CheckboxListTile(
+                                      value: !controller.state.allTrips.value
+                                          ? true
+                                          : false,
+                                      onChanged: (value) {
+                                        controller.state.allTrips.value = false;
+                                      },
+                                      title: Text(
+                                        "Wait",
+                                        style: Get.textTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          flex: 20,
+                          child: ListView.separated(
+                            itemCount:
+                                controller.state.tripsModel!.trips!.length,
+                            itemBuilder: (context, index) {
+                              return Obx(
+                                () => controller.state.allTrips.value
+                                    ? MyRideCard(index: index)
+                                    : controller.state.tripsModel!.trips![index]
+                                                .state ==
+                                            'waiting'
+                                        ? MyRideCard(index: index)
+                                        : Container(),
+                              );
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return Obx(
+                                () => controller.state.allTrips.value
+                                    ? Divider(color: Colors.black)
+                                    : controller.state.tripsModel!.trips![index]
+                                                .state ==
+                                            'waiting'
+                                        ? Divider(color: Colors.black)
+                                        : Container(),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     );
                   }
                 }

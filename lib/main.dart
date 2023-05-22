@@ -1,6 +1,8 @@
 import 'package:carpooling_o6u_students/app/core/theme/thems.dart';
 import 'package:carpooling_o6u_students/app/modules/notification_api.dart';
+import 'package:carpooling_o6u_students/app/routes/my_map_routes.dart';
 import 'package:carpooling_o6u_students/app/routes/start_point_routes.dart';
+import 'package:carpooling_o6u_students/app/test.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -45,13 +47,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(414, 896),
+      designSize: const Size(414, 896),
       builder: (context, _) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Your App Title',
-          initialRoute: StartPointRoutes.startPoint,
-          // home: const StartPointPage(),
+          initialRoute:StartPointRoutes.startPoint ,
+          // home: const RideDetailsScreen(),
           getPages: AppPages.routes,
           theme: AppTheme.lightTheme,
           defaultTransition: Transition.circularReveal,

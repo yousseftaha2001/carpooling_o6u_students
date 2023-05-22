@@ -1,4 +1,5 @@
 import 'package:carpooling_o6u_students/app/data/services/all_trips.dart';
+import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 
@@ -18,42 +19,37 @@ class RideRequestsController extends GetxController {
       (l) {
         print(l);
         state.error.value = l;
+        state.requests=null;
         state.gettingState.value = !state.gettingState.value;
       },
       (r) async {
-        print("h");
+       
         state.requests = r;
-        printInfo(info: state.requests!.requets!.length.toString());
-        // for (var i = 0; i < state.requests!.requets!.length; i++) {
-        //   state.requests!.requets![i].startLocation = await getAddress(
-        //       double.parse(requests!.requets![i].startLocation!.split(",")[0]),
-        //       double.parse(requests!.requets![i].startLocation!.split(",")[1]));
-        //   requests!.requets![i].endLocation = await getAddress(
-        //       double.parse(requests!.requets![i].endLocation!.split(",")[0]),
-        //       double.parse(requests!.requets![i].endLocation!.split(",")[1]));
-        // }
+        // printInfo(info: state.requests!.requets!.length.toString());
+        
         state.gettingState.value = !state.gettingState.value;
       },
     );
   }
 
-  void acceptRequest({required int index}) async {
+  void acceptRequest({required int index,required String type}) async {
     Get.dialog(CircularDialog(), barrierDismissible: false);
     var result = await AllTripsServices.changeRequestState(
       tripId: tripId.toString(),
       uid: state.requests!.requets![index].uId!.toString(),
       requestId: state.requests!.requets![index].id!.toString(),
-      state: "accepted",
+      state: type,
     );
     result.fold(
       (l) {
         print("$l");
         Get.back();
-        Get.dialog(InfoDialog(error: l.toString(), title: "Error"));
+        Get.dialog(InfoDialog(error: l.toString(), title:  Icons.error_outline_outlined,));
       },
       (r) {
         Get.back();
-        Get.dialog(InfoDialog(error: r, title: "Done"));
+        getData();
+        Get.dialog(InfoDialog(error: r, title:Icons.check));
       },
     );
   }

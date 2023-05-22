@@ -16,8 +16,9 @@ class MyRidesController extends GetxController {
         state.gettingState.value = !state.gettingState.value;
       },
           (r) async {
-        print("h");
+       
         state.tripsModel = r;
+        print(state.tripsModel!.trips!.length);
         for (var i = 0; i < state.tripsModel!.trips!.length; i++) {
           state.tripsModel!.trips![i].startLocation = await getAddress(
               double.parse(state.tripsModel!.trips![i].startLocation!.split(",")[0]),
