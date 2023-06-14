@@ -1,11 +1,14 @@
 import 'package:carpooling_o6u_students/app/core/widgets/circular_dialog.dart';
+import 'package:carpooling_o6u_students/app/modules/track_location_map/track_location_binidings.dart';
 import 'package:carpooling_o6u_students/app/modules/trip_room/widgets/rate_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../data/services/all_trips.dart';
+import '../track_location_map/track_location_map_view.dart';
 import 'trip_room_state.dart';
 
 class TripRoomController extends GetxController {
@@ -27,12 +30,12 @@ class TripRoomController extends GetxController {
       (r) async {
         state.tripRoomModel = r;
 
-        state.tripRoomModel!.trip!.startLocation = await getAddress(
+        state.startAddress = await getAddress(
             double.parse(
                 state.tripRoomModel!.trip!.startLocation!.split(",")[0]),
             double.parse(
                 state.tripRoomModel!.trip!.startLocation!.split(",")[1]));
-        state.tripRoomModel!.trip!.endLocation = await getAddress(
+        state.endAddress = await getAddress(
             double.parse(state.tripRoomModel!.trip!.endLocation!.split(",")[0]),
             double.parse(
                 state.tripRoomModel!.trip!.endLocation!.split(",")[1]));
@@ -59,7 +62,26 @@ class TripRoomController extends GetxController {
 
   void sendRequest() async {
     if (state.tripRoomModel!.trip!.state == 'start') {
-      Get.dialog(RateingDialog());
+      Get.to(
+        TrackLocationMapComponent(),
+        binding: TrackLocationBindings(
+          startLocation: LatLng(
+            double.parse(
+                state.tripRoomModel!.trip!.startLocation!.split(",")[0]),
+            double.parse(
+              state.tripRoomModel!.trip!.startLocation!.split(",")[1],
+            ),
+          ),
+          endLocation: LatLng(
+            double.parse(
+                state.tripRoomModel!.trip!.endLocation!.split(",")[0]),
+            double.parse(
+              state.tripRoomModel!.trip!.endLocation!.split(",")[1],
+            ),
+          ),
+        ),
+      );
+      // Get.dialog(RateingDialog());
     } else {
       Get.dialog(CircularDialog(), barrierDismissible: false);
       var result = await AllTripsServices.startRide(tripId: tripId);
@@ -68,13 +90,32 @@ class TripRoomController extends GetxController {
           Get.back();
           Get.snackbar("Error", '$l');
         },
-        (r) {
+        (r) async {
           Get.back();
           getTrips();
-          Get.dialog(
+          await Get.dialog(
             InfoDialog(
               error: 'you are on track!',
               title: Icons.check,
+            ),
+          );
+          Get.to(
+            TrackLocationMapComponent(),
+            binding: TrackLocationBindings(
+              startLocation: LatLng(
+                double.parse(
+                    state.tripRoomModel!.trip!.startLocation!.split(",")[0]),
+                double.parse(
+                  state.tripRoomModel!.trip!.startLocation!.split(",")[1],
+                ),
+              ),
+              endLocation: LatLng(
+                double.parse(
+                    state.tripRoomModel!.trip!.endLocation!.split(",")[0]),
+                double.parse(
+                  state.tripRoomModel!.trip!.endLocation!.split(",")[1],
+                ),
+              ),
             ),
           );
         },
@@ -104,10 +145,10 @@ class TripRoomController extends GetxController {
     );
   }
 
-  callNumber(String phone) async{
-  const number = '01033953634'; //set the number here
-  var res = await FlutterPhoneDirectCaller.callNumber(phone);
-}
+  callNumber(String phone) async {
+    const number = '01033953634'; //set the number here
+    var res = await FlutterPhoneDirectCaller.callNumber(phone);
+  }
 
   @override
   void onInit() {

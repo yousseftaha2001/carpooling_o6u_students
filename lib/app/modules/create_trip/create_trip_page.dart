@@ -3,15 +3,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../home/widgets/leading_button.dart';
 import 'create_trip_controller.dart';
 
-class CreateTripPage extends GetView<CreateTripController> {
+class CreateTripPage extends StatefulWidget {
   CreateTripPage({super.key});
+
+  @override
+  State<CreateTripPage> createState() => _CreateTripPageState();
+}
+
+class _CreateTripPageState extends State<CreateTripPage> {
   CreateTripController controller = Get.put(CreateTripController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: LeadingButton(),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          "Give The Ride",
+          style: Get.textTheme.bodyMedium!.copyWith(
+            color: Get.theme.primaryColor,
+            fontSize: 20.sp,
+          ),
+
+        ),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 10.w),
@@ -19,20 +40,21 @@ class CreateTripPage extends GetView<CreateTripController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.start,
+                //   children: [
+                //     IconButton(
+                //       onPressed: () {
+                //         Get.back();
+                //       },
+                //       icon: const Icon(
+                //         Icons.arrow_back_ios,
+                //         color: Colors.black,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+
                 SizedBox(height: 15.h),
                 Obx(
                   () => CheckboxListTile(
@@ -75,7 +97,7 @@ class CreateTripPage extends GetView<CreateTripController> {
                 SizedBox(height: 15.h),
                 TextField(
                   // readOnly: true,
-                   style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black),
                   controller: controller.carNum,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
@@ -99,7 +121,7 @@ class CreateTripPage extends GetView<CreateTripController> {
                 TextField(
                   // readOnly: true,
                   controller: controller.seats,
- style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15.sp),
@@ -161,7 +183,7 @@ class CreateTripPage extends GetView<CreateTripController> {
                     controller.pickDate();
                   },
                   controller: controller.startTime,
-                   style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15.sp),
@@ -181,32 +203,7 @@ class CreateTripPage extends GetView<CreateTripController> {
                   ),
                 ),
                 SizedBox(height: 15.h),
-                TextField(
-                  readOnly: true,
-                   onTap: () {
-                    print("object");
-                    controller.pickEndTime();
-                  },
-                  controller: controller.endTime,
-                   style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.sp),
-                      borderSide: BorderSide(color: Colors.transparent),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.sp),
-                      borderSide: BorderSide(color: Colors.transparent),
-                    ),
 
-                    prefixIcon: Icon(Icons.share_arrival_time),
-
-                    // suffixIcon:  Icon(Icons.),
-                    hintText: 'End Time',
-                    fillColor: Colors.grey.withOpacity(0.2),
-                    filled: true,
-                  ),
-                ),
                 SizedBox(height: 15.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -270,5 +267,12 @@ class CreateTripPage extends GetView<CreateTripController> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    Get.delete<CreateTripController>();
   }
 }

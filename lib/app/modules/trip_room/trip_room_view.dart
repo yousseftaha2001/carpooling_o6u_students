@@ -77,12 +77,17 @@ class _TripRoomPageState extends State<TripRoomPage> {
                                   children: [
                                     Icon(Icons.location_on_outlined),
                                     SizedBox(width: 10.w),
-                                    Text(
-                                      controller.state.tripRoomModel!.trip!
-                                          .startLocation!,
-                                      style: Get.textTheme.bodySmall!.copyWith(
-                                        fontSize: 22.sp,
-                                        fontWeight: FontWeight.normal,
+                                    SizedBox(
+                                      width: Get.width/1.9,
+                                      child: Text(
+                                        state.startAddress!,
+                                        style: Get.textTheme.bodySmall!.copyWith(
+                                          fontSize: 22.sp,
+                                          fontWeight: FontWeight.normal,
+
+                                        ),
+                                        softWrap: true,
+                                        overflow: TextOverflow.fade,
                                       ),
                                     )
                                   ],
@@ -132,8 +137,7 @@ class _TripRoomPageState extends State<TripRoomPage> {
                                     Icon(Icons.location_on),
                                     SizedBox(width: 10.w),
                                     Text(
-                                      controller.state.tripRoomModel!.trip!
-                                          .endLocation!,
+                                      state.endAddress!,
                                       style: Get.textTheme.bodySmall!.copyWith(
                                         fontSize: 22.sp,
                                         fontWeight: FontWeight.normal,

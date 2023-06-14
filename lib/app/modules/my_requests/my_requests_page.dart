@@ -4,10 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
+import '../home/widgets/leading_button.dart';
 import 'my_requests_controller.dart';
 
-class MyRequestsPage extends GetView<MyRequestsController> {
+class MyRequestsPage extends StatefulWidget {
    MyRequestsPage({super.key});
+
+  @override
+  State<MyRequestsPage> createState() => _MyRequestsPageState();
+}
+
+class _MyRequestsPageState extends State<MyRequestsPage> {
    MyRequestsController controller=Get.put(MyRequestsController());
 
   @override
@@ -21,15 +28,7 @@ class MyRequestsPage extends GetView<MyRequestsController> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-        ),
+        leading: LeadingButton(),
       ),
       body: SafeArea(
         child: Padding(
@@ -45,7 +44,7 @@ class MyRequestsPage extends GetView<MyRequestsController> {
               } else {
                 if (controller.error.value.isNotEmpty) {
                   return Center(
-                    child: Text("Some thing want wrong please try again"),
+                    child: Text("${controller.error.value}"),
                   );
                 } else {
                   if (controller.requests == null) {
@@ -56,7 +55,7 @@ class MyRequestsPage extends GetView<MyRequestsController> {
                     return ListView.separated(
                       itemCount: controller.requests!.requets!.length,
                       itemBuilder: (context, index) {
-                        return MyRequestWidget(
+                        return ReqWidget(
                           index: index,
                         );
                       },
@@ -74,5 +73,10 @@ class MyRequestsPage extends GetView<MyRequestsController> {
         ),
       ),
     );
+  }
+  @override
+  void dispose() {
+    Get.delete<MyRequestsController>();
+    super.dispose();
   }
 }

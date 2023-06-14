@@ -7,10 +7,10 @@ import 'package:get/get.dart';
 import '../../modules/ride_requests/ride_requests_controller.dart';
 
 class RequestCard extends StatelessWidget {
-   RequestCard({Key? key,required this.index}) : super(key: key);
+  RequestCard({Key? key, required this.index}) : super(key: key);
 
-   late int index;
-   RideRequestsController controller = Get.find();
+  late int index;
+  RideRequestsController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,6 @@ class RequestCard extends StatelessWidget {
           padding: EdgeInsets.all(10.0.sp),
           child: Column(
             children: [
-
-
-
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -48,13 +45,14 @@ class RequestCard extends StatelessWidget {
                   SizedBox(height: 10.h),
                   Row(
                     children: [
-                       Icon(
+                      Icon(
                         Icons.star,
                         size: 35.sp,
                         color: Color.fromRGBO(234, 205, 105, 1),
                       ),
                       Text(
-                        controller.state.requests!.requets![index].rateP!.toString(),
+                        controller.state.requests!.requets![index].rateP!
+                            .toString(),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 20.sp,
@@ -62,65 +60,68 @@ class RequestCard extends StatelessWidget {
                         ),
                       ),
                       Spacer(),
-                      CircleAvatar(
-                        radius: 40.sp,
-                        child: Image.network('$photoAPI${controller.state.requests!.requets![index].photo!}',),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(50.sp),
+                        child: Image.network(
+                          '$photoAPI${controller.state.requests!.requets![index].photo!}',
+                          height: 100.h,
+                          width: 100.h,
+                        ),
                       ),
                     ],
                   ),
                   SizedBox(height: 20.h),
                 ],
               ),
-
               Container(
                 height: 1.h,
                 color: Colors.grey,
               ),
-            controller.state.requests!.requets![index].requestState=='wait'? Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 Padding(
-                   padding: EdgeInsets.all(10.sp),
-                   child: TextButton(
-                     onPressed: () {
-                       controller.acceptRequest(index: index,type: 'accepted');
-
-                     },
-                     child: Text(
-                       'Accept',
-                       style: TextStyle(
-                         fontSize: 20.sp,
-                         fontWeight: FontWeight.bold,
-                         color: Get.theme.primaryColor,
-                       ),
-                     ),
-                   ),
-                 ),
-
-                 Padding(
-                   padding: EdgeInsets.all(10.sp),
-                   child: TextButton(
-                     onPressed: () {
-                       controller.acceptRequest(index: index,type: 'rejected');
-
-                     },
-                     child: Text(
-                       'Reject',
-                       style: TextStyle(
-                         fontSize: 20.sp,
-                         fontWeight: FontWeight.bold,
-                         color: Colors.red,
-                       ),
-                     ),
-                   ),
-                 ),
-               ],
-             ):Container()
+              controller.state.requests!.requets![index].requestState == 'wait'
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(10.sp),
+                          child: TextButton(
+                            onPressed: () {
+                              controller.acceptRequest(
+                                  index: index, type: 'accepted');
+                            },
+                            child: Text(
+                              'Accept',
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Get.theme.primaryColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10.sp),
+                          child: TextButton(
+                            onPressed: () {
+                              controller.acceptRequest(
+                                  index: index, type: 'rejected');
+                            },
+                            child: Text(
+                              'Reject',
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Container()
             ],
           ),
         ),
       ),
     );
-
   }
 }

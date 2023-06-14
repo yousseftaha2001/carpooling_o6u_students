@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
+import '../home/widgets/leading_button.dart';
 import 'my_rides_controller.dart';
 
 class MyRidesPage extends StatefulWidget {
@@ -29,15 +30,7 @@ class _MyRidesPageState extends State<MyRidesPage> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-        ),
+        leading: LeadingButton(),
       ),
       body: SafeArea(
         child: Padding(
@@ -110,11 +103,11 @@ class _MyRidesPageState extends State<MyRidesPage> {
                             itemBuilder: (context, index) {
                               return Obx(
                                 () => controller.state.allTrips.value
-                                    ? MyRideCard(index: index)
+                                    ? RideCard(index: index)
                                     : controller.state.tripsModel!.trips![index]
                                                 .state ==
                                             'waiting'
-                                        ? MyRideCard(index: index)
+                                        ? RideCard(index: index)
                                         : Container(),
                               );
                             },

@@ -3,7 +3,7 @@
  
  String placesApi="https://maps.googleapis.com/maps/api/place/findplacefromtext/output?parameters";
 const String base='http://89.117.58.215:5006/api';
-const photoAPI = 'http://89.117.58.215:5006/storage/app';
+const photoAPI = 'http://89.117.58.215:5006/storage/app/';
 const String signUpAPI='$base/signup';
 const String loginAPI='$base/login';
 const String logoutAPI='$base/logout';

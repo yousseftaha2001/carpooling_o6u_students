@@ -24,13 +24,6 @@ class LoginPageController extends GetxController {
     update(['button']);
   }
 
-  void continueButton() {
-    // Get.to(
-    //   () => MyMapPage(
-    //     destination: "signUp",
-    //   ),
-    // );
-  }
   void login() async {
     if (firebaseToken.isNotEmpty && firebaseToken != 'error') {
       Get.dialog(CircularDialog(), barrierDismissible: false);
@@ -53,7 +46,10 @@ class LoginPageController extends GetxController {
         (r) async {
           print("welcome");
           await MyDataBase.insertData(
-              token: r.token!, studnetId: r.user!.uId!.toString());
+            token: r.token!,
+            studnetId: r.user!.uId!.toString(),
+            photo: r.user!.photo!,
+          );
 
           Get.back();
           Get.offAll(
@@ -83,23 +79,8 @@ class LoginPageController extends GetxController {
 
   @override
   void onInit() {
-    // notificationInit();
-    // initMessage();
-
     getFirebaseToken();
     id = TextEditingController();
     password = TextEditingController();
-  }
-
-  void send() async {}
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 }

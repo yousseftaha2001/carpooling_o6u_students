@@ -1,4 +1,5 @@
 import 'package:carpooling_o6u_students/app/core/theme/thems.dart';
+import 'package:carpooling_o6u_students/app/modules/my_map/my_map_page.dart';
 import 'package:carpooling_o6u_students/app/modules/notification_api.dart';
 import 'package:carpooling_o6u_students/app/routes/my_map_routes.dart';
 import 'package:carpooling_o6u_students/app/routes/start_point_routes.dart';
@@ -48,12 +49,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(414, 896),
+      useInheritedMediaQuery: true,
       builder: (context, _) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Your App Title',
           initialRoute:StartPointRoutes.startPoint ,
-          // home: const RideDetailsScreen(),
+          // home:  MyMapPage(),
           getPages: AppPages.routes,
           theme: AppTheme.lightTheme,
           defaultTransition: Transition.circularReveal,

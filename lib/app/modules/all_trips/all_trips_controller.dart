@@ -26,6 +26,7 @@ class AllTripsController extends GetxController {
       (r) async {
         print("h");
         tripsModel = r;
+      if(tripsModel!.trips!.isNotEmpty){
         for (var i = 0; i < tripsModel!.trips!.length; i++) {
           tripsModel!.trips![i].startLocation = await getAddress(
               double.parse(tripsModel!.trips![i].startLocation!.split(",")[0]),
@@ -34,15 +35,19 @@ class AllTripsController extends GetxController {
               double.parse(tripsModel!.trips![i].endLocation!.split(",")[0]),
               double.parse(tripsModel!.trips![i].endLocation!.split(",")[1]));
         }
-        print(tripsModel!.trips!.first.driverPhoto!);
+        // print(tripsModel!.trips!.first.driverPhoto!);
         gettingState.value = !gettingState.value;
+      }else{
+        gettingState.value = !gettingState.value;
+      }
       },
     );
   }
 
   Future<String> getAddress(double latitude, double longitude) async {
+  try {
     final List<Placemark> placemarks =
-        await placemarkFromCoordinates(latitude, longitude);
+        await placemarkFromCoordinates(latitude,longitude);
 
     if (placemarks != null && placemarks.isNotEmpty) {
       final Placemark placemark = placemarks[1];
@@ -53,6 +58,9 @@ class AllTripsController extends GetxController {
     } else {
       return "No address found";
     }
+  } catch (e) {
+     return "No address found";
+  }
   }
 
   void sendRequest({required String id}) async {

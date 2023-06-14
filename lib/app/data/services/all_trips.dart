@@ -14,6 +14,7 @@ class AllTripsServices {
     try {
       var token = MyDataBase.getToken();
       var headers = {'Authorization': 'Bearer $token'};
+      print(allTripsAPI);
       var request = http.Request('GET', Uri.parse(allTripsAPI));
 
       request.headers.addAll(headers);
@@ -142,7 +143,7 @@ class AllTripsServices {
 
       var headers = {'Authorization': 'Bearer $token'};
 
-      var request = http.MultipartRequest('PUT', Uri.parse('$startTripAPI$tripId'));
+      var request = http.MultipartRequest('POST', Uri.parse('$startTripAPI$tripId'));
 
 
       request.headers.addAll(headers);
@@ -160,7 +161,9 @@ class AllTripsServices {
           return Left(formatedResult['msg'].toString());
         }
       } else {
-        print(response.reasonPhrase);
+        // print(response.stream.bytesToString());
+        var e= await response.stream.bytesToString();
+        print(e);
         return Left(response.reasonPhrase!.toString());
       }
     } catch (e) {
@@ -174,7 +177,7 @@ class AllTripsServices {
 
       var headers = {'Authorization': 'Bearer $token'};
 
-      var request = http.MultipartRequest('PUT', Uri.parse('$endTripAPI$tripId'));
+      var request = http.MultipartRequest('POST', Uri.parse('$endTripAPI$tripId'));
 
 
       request.headers.addAll(headers);
@@ -206,8 +209,8 @@ class AllTripsServices {
       var token = MyDataBase.getToken();
 
       var headers = {'Authorization': 'Bearer $token'};
-
-      var request = http.MultipartRequest('PUT', Uri.parse('$rideTripAPI$tripId'));
+      print('$rideTripAPI$tripId');
+      var request = http.MultipartRequest('POST', Uri.parse('$rideTripAPI$tripId'));
 
 
       request.headers.addAll(headers);

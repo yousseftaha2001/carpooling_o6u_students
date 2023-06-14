@@ -98,7 +98,8 @@ class SignupController extends GetxController {
         },
         (r) async {
           print("welcome");
-          await MyDataBase.insertData(token: r.token!, studnetId: r.user!.uId!);
+          await MyDataBase.insertData(
+              token: r.token!, studnetId: r.user!.uId!, photo: r.user!.photo!);
 
           Get.back();
           Get.offAll(
@@ -133,15 +134,5 @@ class SignupController extends GetxController {
     name = TextEditingController();
     phone = TextEditingController();
     password = TextEditingController();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 }

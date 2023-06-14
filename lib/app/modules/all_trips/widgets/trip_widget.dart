@@ -1,3 +1,4 @@
+import 'package:carpooling_o6u_students/app/core/config/apis.dart';
 import 'package:carpooling_o6u_students/app/modules/all_trips/all_trips_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -76,7 +77,7 @@ class TripCard extends StatelessWidget {
                 Column(
                   children: [
                     Text(controller.tripsModel!.trips![index].carType!),
-                    Image.asset("assets/2554936.png", height: 100.h)
+                    Image.network("$photoAPI${controller.tripsModel!.trips![index].carPhoto}", height: 100.h)
 
                   ],
                 ),

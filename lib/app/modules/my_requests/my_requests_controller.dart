@@ -6,8 +6,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 
 class MyRequestsController extends GetxController {
-  //TODO: Implement MyRequestsController.
-    RxBool gettingState = false.obs;
+
+  RxBool gettingState = false.obs;
   RxString error = ''.obs;
   MyRequests? requests;
 
@@ -34,7 +34,6 @@ class MyRequestsController extends GetxController {
     );
   }
 
-
   void getTrips() async {
     gettingState.value = !gettingState.value;
     var result = await AllTripsServices.getMyRequests();
@@ -60,7 +59,7 @@ class MyRequestsController extends GetxController {
     );
   }
 
-      Future<String> getAddress(double latitude, double longitude) async {
+  Future<String> getAddress(double latitude, double longitude) async {
     final List<Placemark> placemarks =
         await placemarkFromCoordinates(latitude, longitude);
 

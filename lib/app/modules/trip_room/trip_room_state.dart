@@ -9,4 +9,6 @@ class TripRoomState {
   RxBool gettingState = false.obs;
   RxString error = ''.obs;
   TripRoomModel? tripRoomModel;
+  String? startAddress;
+  String? endAddress;
 }

@@ -1,9 +1,12 @@
 import 'package:carpooling_o6u_students/app/core/helpers/local_data.dart';
 import 'package:carpooling_o6u_students/app/modules/all_trips/all_trips_page.dart';
+import 'package:carpooling_o6u_students/app/modules/home/widgets/drqwer.dart';
+import 'package:carpooling_o6u_students/app/modules/home/widgets/my_home.dart';
 import 'package:carpooling_o6u_students/app/modules/my_rides/my_rides_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:slide_drawer/slide_drawer.dart';
 
 import '../create_trip/create_trip_page.dart';
 import '../my_requests/my_requests_page.dart';
@@ -15,11 +18,20 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+   return Scaffold(
+      body: Stack(
+        children: [
+          DrawerScreen(),
+          HomeScreen(),
+        ],
+      ),
+    );
     return Scaffold(
       // appBar: AppBar(
       //   title: const Text('HomePage'),
       //   centerTitle: true,
       // ),
+    
       body: SafeArea(
         child: Stack(
           children: [

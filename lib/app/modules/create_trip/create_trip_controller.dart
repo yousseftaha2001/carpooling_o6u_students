@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:carpooling_o6u_students/app/core/widgets/circular_dialog.dart';
+import 'package:carpooling_o6u_students/app/modules/home/home_controller.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,6 +28,7 @@ class CreateTripController extends GetxController {
   late TextEditingController endTime;
   RxString carType = ''.obs;
   File? carImage;
+
   Future<void> pickerImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -87,7 +89,7 @@ class CreateTripController extends GetxController {
         carNum.text.isNotEmpty &&
         seats.text.isNotEmpty &&
         startLocation.text.isNotEmpty &&
-        endTime.text.isNotEmpty &&
+
         startTime.text.isNotEmpty) {
       Get.dialog(
         CircularDialog(),
@@ -113,22 +115,31 @@ class CreateTripController extends GetxController {
           Get.back();
           Get.snackbar("Error", l);
         },
-        (r) {
+        (r)async {
           Get.back();
           // Get.snackbar("Done", "Done");
           Get.back();
-          Get.dialog(AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.check,color: Colors.green,size: 50.sp,),
-                Text(
-                  "Done your trip has been uploaded",
-                  style: Get.textTheme.bodyMedium,
-                )
-              ],
+        await  Get.dialog(
+            AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.check,
+                    color: Colors.green,
+                    size: 50.sp,
+                  ),
+                  Text(
+                    "Done your trip has been uploaded",
+                    style: Get.textTheme.bodyMedium,
+                  )
+                ],
+              ),
             ),
-          ));
+          );
+        // Get.back();
+          HomeController homeController=Get.find<HomeController>();
+          homeController.cureentScreen.value=1;
         },
       );
     }
