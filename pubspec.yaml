@@ -46,6 +46,7 @@ dependencies:
   eva_icons_flutter: ^3.1.0
   flutter_rating_bar: ^4.0.1
   geolocator: ^9.0.2
+  equatable: ^2.0.5
   
   
   permission_handler: ^10.2.0

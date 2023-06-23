@@ -17,5 +17,7 @@ const String rideRequestsAPI='$base/all_trip_requests/';
 const String startTripAPI='$base/start_trip/';
 const String endTripAPI='$base/end_trip/';
 const String rideTripAPI='$base/rideTrip/';
+const String incidentEndAPI='$base/incident_end/';
+const String rateDriverAPI='$base/rate';
 // const String startTripAPI='$base/start_trip/';
 const String changeRequestStateAPI='$base/change_request_state';

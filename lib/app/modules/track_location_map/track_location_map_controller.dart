@@ -1,5 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:carpooling_o6u_students/app/core/widgets/circular_dialog.dart';
+import 'package:carpooling_o6u_students/app/data/services/all_trips.dart';
+import 'package:carpooling_o6u_students/app/modules/trip_room/trip_room_controller.dart';
+import 'package:carpooling_o6u_students/app/modules/trip_room/widgets/rate_dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -8,16 +14,18 @@ import 'track_location_map_state.dart';
 
 class TrackLocationMapController extends GetxController {
   final TrackLocationMapState state = TrackLocationMapState();
+  late String tripId;
   late LatLng startLocation;
   late LatLng endLocation;
   final LocationSettings locationSettings = LocationSettings(
     accuracy: LocationAccuracy.high,
-    distanceFilter: 100,
+    distanceFilter: 1,
   );
 
   TrackLocationMapController({
     required this.startLocation,
     required this.endLocation,
+    required this.tripId,
   });
 
   Future<Position> determinePosition() async {
@@ -45,20 +53,35 @@ class TrackLocationMapController extends GetxController {
     return await Geolocator.getCurrentPosition();
   }
 
+  void addCustomIcon() async {
+    await BitmapDescriptor.fromAssetImage(
+            const ImageConfiguration(), "assets/carmarker.png")
+        .then(
+      (icon) {
+        state.markerIcon = icon;
+      },
+    );
+  }
+
   void addMarker({required String markerId, required LatLng location}) {
     state.myMarkers.add(
       Marker(
         markerId: MarkerId('$markerId'),
         position: LatLng(location.latitude, location.longitude),
         infoWindow: InfoWindow(title: '$markerId'),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        icon: markerId == 'My Location'
+            ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue)
+            : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
       ),
     );
   }
 
-  void changeCamera({required LatLng latLng,required String id}) async {
+  void changeCamera({required LatLng latLng, required String id}) async {
     //  final GoogleMapController controller =  controller.;
-    addMarker(location: latLng, markerId: id);
+    addMarker(
+      location: latLng,
+      markerId: id,
+    );
     state.googleMapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -75,15 +98,111 @@ class TrackLocationMapController extends GetxController {
     try {
       var location = await determinePosition();
 
-      state.userLocation.value =
-          LatLng(location.latitude, location.longitude);
+      state.userLocation.value = LatLng(location.latitude, location.longitude);
 
       update(['map']);
 
-      changeCamera(latLng: state.userLocation.value!,id: 'My Location');
+      changeCamera(latLng: state.userLocation.value!, id: 'My Location');
       // drawPoly();
       return location;
     } catch (e) {}
+  }
+
+  bool clacDistance() {
+    var reulst = Geolocator.distanceBetween(
+      state.userLocation.value!.latitude,
+      state.userLocation.value!.longitude,
+      endLocation.latitude,
+      endLocation.longitude,
+    );
+    return reulst <= 100;
+  }
+
+  void endTripFunction() async {
+    Get.dialog(RateingDialog());
+    // if(clacDistance()){
+    //   endTrip();
+    // }else{
+    //   endTripAc();
+    // }
+  }
+
+  void ending() {
+    if (clacDistance()) {
+      endTrip();
+    } else {
+      endTripAc();
+    }
+  }
+
+  void endTrip() async {
+    Get.back();
+    Get.dialog(CircularDialog(), barrierDismissible: false);
+    TripRoomController controller = Get.find();
+
+    List item = List.generate(
+        controller.state.rates.length,
+        (index) => {
+              'id': controller.state.rates[index].id.toString(),
+              'new_rate': controller.state.rates[index].rate
+            });
+    var json = {
+      'items': jsonEncode(item),
+    };
+    var result = await AllTripsServices.endRide(tripId: tripId, json: json);
+    result.fold(
+      (l) {
+        Get.back();
+        Get.snackbar("Error", '$l');
+      },
+      (r) async {
+        Get.back();
+        TripRoomController controller = Get.find<TripRoomController>();
+        await controller.getTrips();
+        await Get.dialog(
+          InfoDialog(
+            error: 'The ride is Done',
+            title: Icons.check,
+          ),
+        );
+        Get.back();
+      },
+    );
+  }
+
+  void endTripAc() async {
+    // Get.back();
+    Get.dialog(CircularDialog(), barrierDismissible: false);
+    TripRoomController controller = Get.find();
+
+    List item = List.generate(
+        controller.state.rates.length,
+            (index) => {
+          'id': controller.state.rates[index].id.toString(),
+          'new_rate': controller.state.rates[index].rate
+        });
+    var json = {
+      'items': jsonEncode(item),
+    };
+    var result = await AllTripsServices.endRideWtihAc(tripId: tripId,json: json);
+    result.fold(
+      (l) {
+        Get.back();
+        Get.snackbar("Error", '$l');
+      },
+      (r) async {
+        Get.back();
+        TripRoomController controller = Get.find<TripRoomController>();
+        await controller.getTrips();
+        await Get.dialog(
+          InfoDialog(
+            error: 'The ride is Done',
+            title: Icons.check,
+          ),
+        );
+        Get.back();
+      },
+    );
   }
 
   @override
@@ -91,21 +210,30 @@ class TrackLocationMapController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     getLoction();
-    changeCamera(id: 'start Point', latLng: startLocation);
-    changeCamera(id: 'End Point', latLng: endLocation);
+
+    changeCamera(
+      id: 'start Point',
+      latLng: startLocation,
+    );
+    changeCamera(
+      id: 'End Point',
+      latLng: endLocation,
+    );
 
     StreamSubscription<Position> positionStream =
-    Geolocator.getPositionStream(locationSettings: locationSettings)
-        .listen((Position? position) {
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position? position) {
       // do what you want to do with the position here
       print("hello");
       state.userLocation.value = LatLng(position!.latitude, position.longitude);
 
-
-
-      changeCamera(latLng:state.userLocation.value!,id: 'My Location');
+      changeCamera(
+        latLng: state.userLocation.value!,
+        id: 'My Location',
+      );
       update(['map']);
     });
+    addCustomIcon();
   }
 
   @override

@@ -26,7 +26,10 @@ class PassengersWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Image.asset('assets/download.png', height: 100.h),
+               ClipRRect(
+                 borderRadius: BorderRadius.circular(100.sp),
+                 child:  Image.network(passengers.photo!, height: 100.h),
+               ),
                 SizedBox(
                   width: 10.w,
                 ),

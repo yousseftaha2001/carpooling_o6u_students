@@ -1,5 +1,6 @@
-import 'package:carpooling_o6u_students/app/data/models/trips_model.dart';
 import 'package:get/get.dart';
+
+import '../../data/models/TripsModel.dart';
 
 class MyRidesState {
   MyRidesState() {

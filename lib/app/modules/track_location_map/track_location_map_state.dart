@@ -16,4 +16,5 @@ class TrackLocationMapState {
 
   ];
   MapServices mapServices = MapServices();
+  late BitmapDescriptor markerIcon;
 }

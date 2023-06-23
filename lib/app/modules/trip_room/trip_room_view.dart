@@ -1,3 +1,4 @@
+import 'package:carpooling_o6u_students/app/core/helpers/global_dun.dart';
 import 'package:carpooling_o6u_students/app/core/widgets/passengers_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -78,13 +79,13 @@ class _TripRoomPageState extends State<TripRoomPage> {
                                     Icon(Icons.location_on_outlined),
                                     SizedBox(width: 10.w),
                                     SizedBox(
-                                      width: Get.width/1.9,
+                                      width: Get.width / 1.9,
                                       child: Text(
                                         state.startAddress!,
-                                        style: Get.textTheme.bodySmall!.copyWith(
+                                        style:
+                                            Get.textTheme.bodySmall!.copyWith(
                                           fontSize: 22.sp,
                                           fontWeight: FontWeight.normal,
-
                                         ),
                                         softWrap: true,
                                         overflow: TextOverflow.fade,
@@ -105,15 +106,8 @@ class _TripRoomPageState extends State<TripRoomPage> {
                                         ),
                                       ),
                                       Text(
-                                        controller.state.tripRoomModel!.trip!
-                                                    .state ==
-                                                'end'
-                                            ? "Done"
-                                            : controller.state.tripRoomModel!
-                                                        .trip!.state ==
-                                                    'start'
-                                                ? 'On track'
-                                                : 'waiting',
+                                        GlobalFunctions.formatState(controller
+                                            .state.tripRoomModel!.trip!.state!),
                                         style:
                                             Get.textTheme.bodySmall!.copyWith(
                                           fontSize: 20.sp,
@@ -157,19 +151,27 @@ class _TripRoomPageState extends State<TripRoomPage> {
                           ),
                         ),
                         Expanded(
-                          child: ListView.builder(
-                            itemCount: controller
-                                .state.tripRoomModel!.passengers!.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10.h),
-                                child: PassengersWidget(
-                                  passengers: controller
-                                      .state.tripRoomModel!.passengers![index],
+                          child: controller
+                                  .state.tripRoomModel!.passengers!.isEmpty
+                              ? Center(
+                                  child: Text(
+                                    "No Passengers in this ride.".tr,
+                                  ),
+                                )
+                              : ListView.builder(
+                                  itemCount: controller
+                                      .state.tripRoomModel!.passengers!.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 10.h),
+                                      child: PassengersWidget(
+                                        passengers: controller.state
+                                            .tripRoomModel!.passengers![index],
+                                      ),
+                                    );
+                                  },
                                 ),
-                              );
-                            },
-                          ),
                         ),
                         Builder(
                           builder: (context) {

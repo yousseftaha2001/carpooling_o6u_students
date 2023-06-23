@@ -60,7 +60,7 @@ class RideCard extends StatelessWidget {
                               color: Colors.yellow,
                             ),
                             Text(
-                              "${controller.state.tripsModel!.trips![index].driverRate}",
+                              "${controller.state.tripsModel!.trips![index].driverRate!.toStringAsPrecision(2)}",
                               style: Get.textTheme.bodyLarge!.copyWith(
                                 fontSize: 17.sp,
                                 color: Colors.black,
@@ -82,7 +82,7 @@ class RideCard extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(left: 0.w),
                         child: Text(
-                          '2 EGP/KG',
+                          '2 EGP/KM',
                           style: Get.textTheme.bodyMedium!.copyWith(
                             fontSize: 16.sp,
                           ),
@@ -117,7 +117,7 @@ class RideCard extends StatelessWidget {
                       ),
                       SizedBox(height: 30.h),
                       Text(
-                        "${controller.state.tripsModel!.trips![index].startLocation}",
+                        "${controller.state.tripsModel!.trips![index].endLocation}",
                         style: Get.textTheme.bodyLarge!.copyWith(
                           fontSize: 18.sp,
                           color: Colors.black,

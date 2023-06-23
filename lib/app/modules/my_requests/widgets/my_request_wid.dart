@@ -1,5 +1,6 @@
 import 'package:carpooling_o6u_students/app/core/config/apis.dart';
 import 'package:carpooling_o6u_students/app/modules/my_requests/my_requests_controller.dart';
+import 'package:carpooling_o6u_students/app/modules/my_requests/rate_driver_dialog.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -34,6 +35,15 @@ class ReqWidget extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 10.h),
+              Icon(
+                Icons.circle,
+                color: controller.requests!.requets![index].tripsState ==
+                        'waiting'
+                    ? Colors.yellow
+                    : controller.requests!.requets![index].tripsState == 'start'
+                        ? Colors.green
+                        : Colors.red,
+              ),
               Row(
                 children: [
                   CircleAvatar(
@@ -106,7 +116,7 @@ class ReqWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${controller.requests!.requets![index].startLocation}",
+                        "${controller.startAd}",
                         style: Get.textTheme.bodyLarge!.copyWith(
                           fontSize: 18.sp,
                           color: Colors.black,
@@ -115,7 +125,7 @@ class ReqWidget extends StatelessWidget {
                       ),
                       SizedBox(height: 30.h),
                       Text(
-                        "${controller.requests!.requets![index].endLocation}",
+                        "${controller.endAd}",
                         style: Get.textTheme.bodyLarge!.copyWith(
                           fontSize: 18.sp,
                           color: Colors.black,
@@ -168,12 +178,20 @@ class ReqWidget extends StatelessWidget {
               ),
 
               SizedBox(height: 20.h),
-              controller.requests!.requets![index].state == 'waiting'
-                  ? Text(
-                      "request state: ${controller.requests!.requets![index].state!}",
-                      style: Get.textTheme.bodySmall,
-                    )
-                  : TextButton(
+              // Text(
+              //   "request state: ${controller.requests!.requets![index].tripsState!}",
+              //   style: Get.textTheme.bodySmall,
+              // ),
+              Builder(builder: (c) {
+                if (controller.requests!.requets![index].state == 'waiting') {
+                  return Text(
+                    "request state: ${controller.requests!.requets![index].state!}",
+                    style: Get.textTheme.bodySmall,
+                  );
+                } else if (controller.requests!.requets![index].state ==
+                    'accepted') {
+                  if (controller.requests!.requets![index].takeen == 0) {
+                    return TextButton(
                       onPressed: () {
                         controller.endTrip(controller
                             .requests!.requets![index]!.id
@@ -182,7 +200,45 @@ class ReqWidget extends StatelessWidget {
                       child: Text(
                         "Ride",
                       ),
-                    ),
+                    );
+                  } else {
+                    if (controller.requests!.requets![index].tripsState ==
+                        'end') {
+                      return Row(
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.money),
+                              Text((controller.clacDistance(controller
+                                              .requests!.requets![index]) *
+                                          2)
+                                      .toStringAsFixed(2)
+                                      .toString() +
+                                  ' EGP')
+                            ],
+                          ),
+                          Spacer(),
+                          TextButton(
+                            onPressed: () {
+                              Get.dialog(
+                                RateingDialogDriver(
+                                    requets:
+                                        controller.requests!.requets![index]!),
+                              );
+                            },
+                            child: Text("Rate the driver!"),
+                          )
+                        ],
+                      );
+                    } else {
+                      return Center();
+                    }
+                  }
+                } else {
+                  return Center();
+                }
+              }),
+
               // ElevatedButton(
               //   onPressed: () {
               //     controller.sendRequest(id: controller.tripsModel!.trips![index].id!.toString());

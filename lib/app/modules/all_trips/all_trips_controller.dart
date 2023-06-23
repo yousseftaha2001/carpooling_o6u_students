@@ -1,10 +1,12 @@
 import 'package:carpooling_o6u_students/app/core/widgets/circular_dialog.dart';
-import 'package:carpooling_o6u_students/app/data/models/trips_model.dart';
+
 import 'package:carpooling_o6u_students/app/data/services/all_trips.dart';
 import 'package:geocoding/geocoding.dart';
 
 // import 'package:geocoder2/geocoder2.dart';
 import 'package:get/get.dart';
+
+import '../../data/models/TripsModel.dart';
 // import 'package:location_geocoder/location_geocoder.dart';
 
 class AllTripsController extends GetxController {
@@ -72,6 +74,7 @@ class AllTripsController extends GetxController {
         Get.snackbar("Error", '$l');
       },
       (r) {
+        getTrips();
         Get.back();
         Get.snackbar("Done", "Yor request has been sent");
       },

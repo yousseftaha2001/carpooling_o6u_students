@@ -18,7 +18,7 @@ class TripRoomController extends GetxController {
 
   TripRoomController({required this.tripId});
 
-  void getTrips() async {
+  Future<void> getTrips() async {
     state.gettingState.value = !state.gettingState.value;
     var result = await AllTripsServices.getTripRoom(tripId: tripId);
     result.fold(
@@ -71,7 +71,9 @@ class TripRoomController extends GetxController {
             double.parse(
               state.tripRoomModel!.trip!.startLocation!.split(",")[1],
             ),
+
           ),
+          tripId: state.tripRoomModel!.trip!.id!.toString(),
           endLocation: LatLng(
             double.parse(
                 state.tripRoomModel!.trip!.endLocation!.split(",")[0]),
@@ -109,6 +111,7 @@ class TripRoomController extends GetxController {
                   state.tripRoomModel!.trip!.startLocation!.split(",")[1],
                 ),
               ),
+              tripId: state.tripRoomModel!.trip!.id!.toString(),
               endLocation: LatLng(
                 double.parse(
                     state.tripRoomModel!.trip!.endLocation!.split(",")[0]),
@@ -123,27 +126,48 @@ class TripRoomController extends GetxController {
     }
   }
 
-  void endTrip() async {
-    Get.back();
-    Get.dialog(CircularDialog(), barrierDismissible: false);
-    var result = await AllTripsServices.endRide(tripId: tripId);
-    result.fold(
-      (l) {
-        Get.back();
-        Get.snackbar("Error", '$l');
-      },
-      (r) {
-        Get.back();
-        getTrips();
-        Get.dialog(
-          InfoDialog(
-            error: 'The ride is Done',
-            title: Icons.check,
-          ),
-        );
-      },
-    );
-  }
+  // void endTrip() async {
+  //   Get.back();
+  //   Get.dialog(CircularDialog(), barrierDismissible: false);
+  //   var result = await AllTripsServices.endRide(tripId: tripId);
+  //   result.fold(
+  //     (l) {
+  //       Get.back();
+  //       Get.snackbar("Error", '$l');
+  //     },
+  //     (r) {
+  //       Get.back();
+  //       getTrips();
+  //       Get.dialog(
+  //         InfoDialog(
+  //           error: 'The ride is Done',
+  //           title: Icons.check,
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+  // void endTripAc() async {
+  //   Get.back();
+  //   Get.dialog(CircularDialog(), barrierDismissible: false);
+  //   var result = await AllTripsServices.endRideWtihAc(tripId: tripId);
+  //   result.fold(
+  //     (l) {
+  //       Get.back();
+  //       Get.snackbar("Error", '$l');
+  //     },
+  //     (r) {
+  //       Get.back();
+  //       getTrips();
+  //       Get.dialog(
+  //         InfoDialog(
+  //           error: 'The ride is Done',
+  //           title: Icons.check,
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   callNumber(String phone) async {
     const number = '01033953634'; //set the number here

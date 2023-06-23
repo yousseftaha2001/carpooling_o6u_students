@@ -73,15 +73,15 @@ class SignupController extends GetxController {
     Get.back();
     if (firebaseToken.isNotEmpty && firebaseToken != 'error') {
       Get.dialog(CircularDialog(), barrierDismissible: false);
-      String add =
-          await getAddress(studentLocation.latitude, studentLocation.longitude);
+      // String add =
+      //     await getAddress(studentLocation.latitude, studentLocation.longitude);
       var result = await AuthServices.signUp(
         id: id.text,
         name: name.text,
         phone: phone.text,
         lat_location: studentLocation.latitude.toString(),
         long_location: studentLocation.longitude.toString(),
-        address: add,
+        address: 'add',
         firebasetoken: firebaseToken,
         password: password.text,
         photo: studentImage!.readAsBytesSync(),
@@ -111,20 +111,20 @@ class SignupController extends GetxController {
     }
   }
 
-  Future<String> getAddress(double latitude, double longitude) async {
-    final List<Placemark> placemarks =
-        await placemarkFromCoordinates(latitude, longitude);
+  // Future<String> getAddress(double latitude, double longitude) async {
+  //   final List<Placemark> placemarks =
+  //       await placemarkFromCoordinates(latitude, longitude);
 
-    if (placemarks != null && placemarks.isNotEmpty) {
-      final Placemark placemark = placemarks[0];
-      final String address =
-          '${placemark.name},${placemark.administrativeArea},${placemark.subAdministrativeArea}';
+  //   if (placemarks != null && placemarks.isNotEmpty) {
+  //     final Placemark placemark = placemarks[0];
+  //     final String address =
+  //         '${placemark.name},${placemark.administrativeArea},${placemark.subAdministrativeArea}';
 
-      return address;
-    } else {
-      return "No address found";
-    }
-  }
+  //     return address;
+  //   } else {
+  //     return "No address found";
+  //   }
+  // }
 
   @override
   void onInit() {

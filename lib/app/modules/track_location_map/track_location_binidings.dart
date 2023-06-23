@@ -5,9 +5,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class TrackLocationBindings extends Bindings {
   late LatLng startLocation;
   late LatLng endLocation;
+  late String tripId;
 
-  TrackLocationBindings(
-      {required this.startLocation, required this.endLocation});
+  TrackLocationBindings({
+    required this.startLocation,
+    required this.endLocation,
+    required this.tripId,
+  });
 
   @override
   void dependencies() {
@@ -15,6 +19,7 @@ class TrackLocationBindings extends Bindings {
       TrackLocationMapController(
         startLocation: startLocation,
         endLocation: endLocation,
+        tripId: tripId,
       ),
     );
   }

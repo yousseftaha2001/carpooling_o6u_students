@@ -1,3 +1,5 @@
+import 'package:carpooling_o6u_students/app/core/config/apis.dart';
+
 class TripRoomModel {
   TripRoomModel({
     this.status,
@@ -137,7 +139,7 @@ class Passengers {
     id = json['id'];
     uId = json['u_id'];
     mobile = json['mobile'];
-    photo = json['photo'];
+    photo = '$photoAPI${json['photo']}';
     latLocation = json['lat_location'];
     longLocation = json['long_location'];
     address = json['address'];

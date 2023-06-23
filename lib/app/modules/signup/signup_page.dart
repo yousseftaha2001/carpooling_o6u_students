@@ -124,6 +124,7 @@ class SignupPage extends GetView<SignupController> {
                           icon: Icons.lock_outline,
                           textInputType: TextInputType.number,
                           controller: controller.password,
+                          show:false,
                           function: (e) {
                             controller.updateButton();
                           },

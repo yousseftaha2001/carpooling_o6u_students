@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:carpooling_o6u_students/app/core/config/apis.dart';
 import 'package:carpooling_o6u_students/app/core/helpers/local_data.dart';
+import 'package:carpooling_o6u_students/app/data/models/MyRequests.dart';
 import 'package:carpooling_o6u_students/app/data/models/RideRequestModel.dart';
 import 'package:carpooling_o6u_students/app/data/models/TripRoomModel.dart';
-import 'package:carpooling_o6u_students/app/data/models/my_requests.dart';
-import 'package:carpooling_o6u_students/app/data/models/trips_model.dart';
+
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
+
+import '../models/TripsModel.dart';
 
 class AllTripsServices {
   static Future<Either<String, TripsModel>> getAllTrips() async {
@@ -171,7 +173,7 @@ class AllTripsServices {
     }
   }
   static Future<Either<String, String>> endRide(
-      {required String tripId}) async {
+      {required String tripId,required var json}) async {
     try {
       var token = MyDataBase.getToken();
 
@@ -179,6 +181,41 @@ class AllTripsServices {
 
       var request = http.MultipartRequest('POST', Uri.parse('$endTripAPI$tripId'));
 
+      request.fields.addAll(json);
+
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        // print(await response.stream.bytesToString  ());
+        var result = await response.stream.bytesToString();
+        var formatedResult = jsonDecode(result);
+        // print(formatedResult);
+        if (jsonDecode(result)['msg'] == 'DONE') {
+          return Right("Done");
+        } else {
+          return Left(formatedResult['msg'].toString());
+        }
+      } else {
+        print(response.reasonPhrase);
+        var e=await response.stream.bytesToString();
+        print(e);
+        return Left(response.reasonPhrase!.toString());
+      }
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+  static Future<Either<String, String>> endRideWtihAc(
+      {required String tripId,required var json}) async {
+    try {
+      var token = MyDataBase.getToken();
+
+      var headers = {'Authorization': 'Bearer $token'};
+
+      var request = http.MultipartRequest('POST', Uri.parse('$incidentEndAPI$tripId'));
+      request.fields.addAll(json);
 
       request.headers.addAll(headers);
 
@@ -203,7 +240,7 @@ class AllTripsServices {
     }
   }
   static Future<Either<String, String>> rideTrip(
-      {required String tripId}) async {
+      {required String tripId,required var json}) async {
     try {
       print(tripId+'ds');
       var token = MyDataBase.getToken();
@@ -212,7 +249,7 @@ class AllTripsServices {
       print('$rideTripAPI$tripId');
       var request = http.MultipartRequest('POST', Uri.parse('$rideTripAPI$tripId'));
 
-
+      request.fields.addAll(json);
       request.headers.addAll(headers);
 
       http.StreamedResponse response = await request.send();
@@ -229,6 +266,41 @@ class AllTripsServices {
         }
       } else {
         print(response.reasonPhrase);
+        return Left(response.reasonPhrase!.toString());
+      }
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+  static Future<Either<String, String>> rateDriver(
+      {required var json}) async {
+    try {
+
+      var token = MyDataBase.getToken();
+
+      var headers = {'Authorization': 'Bearer $token'};
+
+      var request = http.MultipartRequest('POST', Uri.parse('$rateDriverAPI'));
+
+      request.fields.addAll(json);
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        // print(await response.stream.bytesToString  ());
+        var result = await response.stream.bytesToString();
+        var formatedResult = jsonDecode(result);
+        // print(formatedResult);
+        if (jsonDecode(result)['msg'] == 'DONE') {
+          return Right(jsonDecode(result)['msg']);
+        } else {
+          return Left(formatedResult['msg'].toString());
+        }
+      } else {
+        print(response.reasonPhrase);
+        var res=await response.stream.bytesToString();
+        print(res);
         return Left(response.reasonPhrase!.toString());
       }
     } catch (e) {
